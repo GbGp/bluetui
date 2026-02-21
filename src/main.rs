@@ -4,7 +4,6 @@ use bluetui::{
     config::Config,
     event::{Event, EventHandler},
     handler::handle_key_events,
-    rfkill,
     tui::Tui,
 };
 use clap::Parser;
@@ -23,8 +22,6 @@ async fn main() -> AppResult<()> {
             exit(1);
         }
     });
-
-    rfkill::check()?;
 
     let config = Arc::new(Config::new(config_file_path));
 

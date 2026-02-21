@@ -316,6 +316,7 @@ impl App {
                     Row::new(vec![
                         controller.name.to_string(),
                         controller.alias.to_string(),
+                        controller.is_blocked.to_string(),
                         {
                             if controller.is_powered {
                                 "On".to_string()
@@ -332,6 +333,7 @@ impl App {
             let widths = [
                 Constraint::Length(10),
                 Constraint::Length(10),
+                Constraint::Length(10),
                 Constraint::Length(5),
                 Constraint::Length(8),
                 Constraint::Length(12),
@@ -345,6 +347,7 @@ impl App {
                         Row::new(vec![
                             Cell::from("Name").style(Style::default().fg(Color::Yellow)),
                             Cell::from("Alias").style(Style::default().fg(Color::Yellow)),
+                            Cell::from("Blocked").style(Style::default().fg(Color::Yellow)),
                             Cell::from("Power").style(Style::default().fg(Color::Yellow)),
                             Cell::from("Pairable").style(Style::default().fg(Color::Yellow)),
                             Cell::from("Discoverable").style(Style::default().fg(Color::Yellow)),
@@ -355,6 +358,7 @@ impl App {
                         Row::new(vec![
                             Cell::from("Name"),
                             Cell::from("Alias"),
+                            Cell::from("Blocked"),
                             Cell::from("Power"),
                             Cell::from("Pairable"),
                             Cell::from("Discoverable"),
@@ -800,6 +804,7 @@ impl App {
 
                 // Update existing adapters
                 controller.alias = refreshed_controller.alias;
+                controller.is_blocked = refreshed_controller.is_blocked;
                 controller.is_powered = refreshed_controller.is_powered;
                 controller.is_pairable = refreshed_controller.is_pairable;
                 controller.is_discoverable = refreshed_controller.is_discoverable;

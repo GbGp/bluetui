@@ -1,3 +1,5 @@
+use crate::rfkill;
+
 use std::sync::{Arc, atomic::AtomicBool};
 
 use bluer::{Adapter, Address, Session};
@@ -11,6 +13,7 @@ pub struct Controller {
     pub adapter: Arc<Adapter>,
     pub name: String,
     pub alias: String,
+    pub is_blocked: bool,
     pub is_powered: bool,
     pub is_pairable: bool,
     pub is_discoverable: bool,
@@ -68,6 +71,7 @@ impl Controller {
         for adapter_name in adapter_names {
             if let Ok(adapter) = session.adapter(&adapter_name) {
                 let name = adapter.name().to_owned();
+                let is_blocked = rfkill::check_blocked(&name)?;
                 let alias = adapter.alias().await?;
                 let is_powered = adapter.is_powered().await?;
                 let is_pairable = adapter.is_pairable().await?;
@@ -81,6 +85,7 @@ impl Controller {
                     adapter: Arc::new(adapter),
                     name,
                     alias,
+                    is_blocked,
                     is_powered,
                     is_pairable,
                     is_discoverable,

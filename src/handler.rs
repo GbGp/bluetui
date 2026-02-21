@@ -698,7 +698,18 @@ pub async fn handle_key_events(
                                     if let Some(selected_controller) =
                                         app.controller_state.selected()
                                     {
-                                        let adapter = &app.controllers[selected_controller].adapter;
+                                        let controller = &app.controllers[selected_controller];
+                                        let adapter = &controller.adapter;
+
+                                        if controller.is_blocked {
+                                            let _ = Notification::send(
+                                                "Adapter is blocked, try yo invoke 'rfkill unblock <adapter>'".into(),
+                                                NotificationLevel::Error,
+                                                sender.clone(),
+                                            );
+                                            return Ok(());
+                                        }
+
                                         tokio::spawn({
                                             let adapter = adapter.clone();
                                             async move {
